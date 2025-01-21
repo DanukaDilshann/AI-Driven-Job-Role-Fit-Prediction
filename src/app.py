@@ -52,20 +52,21 @@ with col2:
     if upload_jd is not None:
         st.write("PDF uploaded Successfully") ## need to create 
 
-uploaded_file=st.file_uploader("Uploader your resume(pdf).........",type=["pdf"])
+# uploaded_file=st.file_uploader("Uploader your resume(pdf).........",type=["pdf"])
 
-if uploaded_file is not None:
-    st.write("PDF uploaded Successfully")
+# if uploaded_file is not None:
+#     st.write("PDF uploaded Successfully")
 
 
 col1,col2=st.columns(2)
 with col1:
     submit4=st.text_input("Employee_ID : ")
 with col2:
-    st.text("If You are currently employee in this company You can Enter your Employee ID to generate basic description base on your resume")
+   submit5=st.button("Description about the Employee")
 
-submit1=st.button("Tell me about the resume")
-submit2=st.button("how can i Imporove my skills")
+# submit1=st.button("Tell me about the resume")
+# submit2=st.button("how can i Imporove my skills")
+
 submit3=st.button("Presentage Match")
 
 
@@ -86,9 +87,11 @@ input_prompt1 = """
 input_prompt3 = """
 You are an skilled profile and job description similarity messuring tool, scanner with a deep understanding of data science, Data analyst, Big data engineer ,DEVOPS
 and ATS functionality, 
-your task is to evaluate the employee profile description against the provided job description. give me the percentage of match if the e,ployee profile matches
+your task is to evaluate the employee profile description against the provided job description. give me the percentage of match if the employee profile matches
 the job description. First the output should come as percentage and then keywords missing and last final thoughts.also you should provide 
-what similarity technique use to meassure the similarity.
+what similarity technique use to meassure the similarity .when you are matching job description and profile, give the priority of the 
+skills, education qualifications,profetional qualifications, working experinece etc. not only the words.also i need to identify most essential skills 
+that provided job description and give the maximum weight for it.then measure the similarity very stricly.
 """
 
 input_prompt4 ="""
@@ -102,17 +105,24 @@ Here is the information:
 - List of Technical Skills: {technical_skills}
 - Programming Skills: {programming_skills}
 - Soft Skills: {soft_skills}
-Generate a concise but detailed professional summary based on the above information."""
+Generate a concise but detailed professional and comprehensive Resume based on the above information.
 
-if submit1:
-    if uploaded_file is not None:
-        pdf_content=input_pdf_setup(uploaded_file)
-        response=get_gemini_response(input_prompt1,pdf_content,input_text)
-        st.subheader("the response is ")
-        st.write(response)
+very important:main purpose is that compare the employee resume and Job description.
+very important:No need a draft of resume. i need detailed pharagraph of that employee to compare with the Job description.
+very important: at this step , i did not provide job description.
 
-    else:
-        st.write("Please upload the resume")
+
+"""
+
+# if submit1:
+#     if uploaded_file is not None:
+#         pdf_content=input_pdf_setup(uploaded_file)
+#         response=get_gemini_response(input_prompt1,pdf_content,input_text)
+#         st.subheader("the response is ")
+#         st.write(response)
+
+#     else:
+#         st.write("Please upload the resume")
 
 
 # if submit3:
@@ -128,6 +138,7 @@ if submit1:
 
 
 # make employee description
+
 def get_gemini_response_Description(input,prompt):
     model=genai.GenerativeModel('gemini-1.5-flash')
     response1=model.generate_content([input,prompt])
@@ -143,14 +154,13 @@ column_mapping = {
     'List of Soft Skills': 'soft_skills',
 }
 
-
 if submit4:
     if submit4 is not None:
         emp_details = e_df[e_df['Emp_id'] == submit4]
         emp_details = emp_details.rename(columns=column_mapping)
-        
+    
         if not emp_details.empty:
-            # Convert the filtered DataFrame to JSON format
+        # Convert the filtered DataFrame to JSON format
             employee_details_json = emp_details.to_json(orient='records', indent=4)
         else:
             st.write(f"No employee found with ID {submit4}")
@@ -162,7 +172,7 @@ if submit4:
             st.write(response11)
     else:
         st.write("Insert the Employee ID")
-        
+
 
 # Pass response1 to the next block
 
@@ -170,6 +180,16 @@ def get_gemini_response1(input,text,prompt):
     model=genai.GenerativeModel('gemini-1.5-flash')
     responsek=model.generate_content([input,text,prompt])
     return responsek.text
+
+import re
+import pandas as pd
+
+def extract_similarity_score(response_text):
+    match = re.search(r'(\d+\.?\d*)\s*%', response_text)
+    if match:
+        return float(match.group(1))
+    return None
+
 if submit3:
     if response11:
         response2 = get_gemini_response1(input_prompt3, response11, input_text)
@@ -177,3 +197,15 @@ if submit3:
         st.write(response2)
     else:
         st.write("Please upload a valid response.")
+
+    similarity_score = extract_similarity_score(response2)
+    if similarity_score and submit4 is not None:
+        data={"Employee_ID" : [submit4], "Similarity Score" : [similarity_score] }
+        df=pd.DataFrame(data)
+        df.to_csv("sim.csv",index=False)
+        # st.write(f"Employee_ID: {submit4}")
+        # st.write(f"Similarity Score: {similarity_score}%")
+    else:
+        st.write("Could not extract similarity score.")
+
+

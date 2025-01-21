@@ -1,17 +1,9 @@
 
-from dotenv import load_dotenv
-import base64
-load_dotenv()
-import io
-import streamlit as st
-import os
-from PIL import Image
-import pdf2image 
-import google.generativeai as genai
+
 import pandas as pd
 
 
-df=pd.read_excel("C://Users//Danuka//Desktop//ATS//src//k.xlsx")
+df=pd.read_excel("C://Users//DanukaDilshanRathnay//Desktop//AI-Driven-Job-Role-Fit-Prediction//src//k.xlsx")
 
 df['Emp_id'] = df['Emp_id'].astype("string")
 
