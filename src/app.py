@@ -7,6 +7,7 @@ from PIL import Image
 import pdf2image 
 import google.generativeai as genai
 from Emp_Basic import e_df
+from DB_conn import store_similarity_score
 
 load_dotenv()
 
@@ -190,22 +191,39 @@ def extract_similarity_score(response_text):
         return float(match.group(1))
     return None
 
+# if submit3:
+#     if response11:
+#         response2 = get_gemini_response1(input_prompt3, response11, input_text)
+#         st.subheader("The response is:")
+#         st.write(response2)
+#     else:
+#         st.write("Please upload a valid response.")
+
+#     similarity_score = extract_similarity_score(response2)
+#     if similarity_score and submit4 is not None:
+#         data={"Employee_ID" : [submit4], "Similarity Score" : [similarity_score] }
+#         df=pd.DataFrame(data)
+#         df.to_csv("sim.csv",index=False)
+#         # st.write(f"Employee_ID: {submit4}")
+#         # st.write(f"Similarity Score: {similarity_score}%")
+#     else:
+#         st.write("Could not extract similarity score.")
+
+
+# At the end of your submit3 logic:
 if submit3:
     if response11:
         response2 = get_gemini_response1(input_prompt3, response11, input_text)
         st.subheader("The response is:")
         st.write(response2)
+
+        similarity_score = extract_similarity_score(response2)
+        if similarity_score and submit4 is not None:
+            # Save the result to SQL database
+            store_similarity_score(int(submit4), similarity_score)
+            st.write(f"Employee_ID: {submit4} stored with Similarity Score: {similarity_score}%")
+        else:
+            st.write("Could not extract similarity score.")
     else:
         st.write("Please upload a valid response.")
-
-    similarity_score = extract_similarity_score(response2)
-    if similarity_score and submit4 is not None:
-        data={"Employee_ID" : [submit4], "Similarity Score" : [similarity_score] }
-        df=pd.DataFrame(data)
-        df.to_csv("sim.csv",index=False)
-        # st.write(f"Employee_ID: {submit4}")
-        # st.write(f"Similarity Score: {similarity_score}%")
-    else:
-        st.write("Could not extract similarity score.")
-
 

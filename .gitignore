@@ -175,3 +175,5 @@ cython_debug/
 # excelll
 .xlsx
 .csv
+
+Emp_Basic.py
