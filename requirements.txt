@@ -8,3 +8,12 @@ openpyxl
 sqlalchemy 
 pymysql
 pyodbc
+langchain
+langchain_huggingface
+spacy
+rapidfuzz
+google-cloud-aiplatform
+gensim
+nltk
+genai
+pyPDF2
