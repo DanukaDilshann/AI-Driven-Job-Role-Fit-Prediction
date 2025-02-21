@@ -34,10 +34,11 @@ def get_jd_data():
 df_jd = get_jd_data()
 conn.close()
 
-e_df=pd.read_excel('C://Users//DanukaDilshanRathnay//Desktop//AI-Driven-Job-Role-Fit-Prediction//src//Employee.xlsx')
-## Streamlit App
-st.set_page_config(page_title="TalentAligner")
-st.header("Skill Gap Finder")
+e_df=pd.read_excel('C://Users//DanukaDilshanRathnay//Desktop//AI-Driven-Job-Role-Fit-Prediction//com//Employee4.xlsx')
+# ## Streamlit App
+# st.set_page_config(page_title="TalentAligner")
+def run():
+    st.header("TalentAligner")
 # col1, col2= st.columns(2)
 
 # with col1:
@@ -47,47 +48,48 @@ st.header("Skill Gap Finder")
 #     if upload_jd is not None:
 #         st.write("PDF uploaded Successfully") 
 
-col1, col2,col3= st.columns(3) 
-with col1:
-    option1 = st.selectbox(
-        'Job Role',
-        set(df_jd['possition'].unique())
-    )
+    col1, col2,col3= st.columns(3) 
+    with col1:
+        option1 = st.selectbox(
+            'Job Role',
+            set(df_jd['possition'].unique())
+        )
 
 # Second dropdown for selecting Department
-with col2:
-    option2 = st.selectbox(
-        'Select Your Department',
-        options=e_df['Department'].unique(),  
-        key="Deartment_search"
-    )
+    with col2:
+        option2 = st.selectbox(
+            'Select Your Department',
+            options=e_df['Department'].unique(),  
+            key="Deartment_search"
+        )
 
 # Filter EmployeeCode based on selected Department
-filtered_employee_codes = e_df[e_df['Department'] == option2]['EmployeeCode'].unique()
+    filtered_employee_codes = e_df[e_df['Department'] == option2]['EmployeeCode'].unique()
 
 # Third dropdown for selecting Employee Code (filtered by selected Department)
-with col3:
-    option3 = st.selectbox(
-        'Select Your Employee Number',
-        options=filtered_employee_codes, 
-        key="employee_search"
-    )
+    with col3:
+        option3 = st.selectbox(
+            'Select Your Employee Number',
+            options=filtered_employee_codes, 
+            key="employee_search"
+        )
 
-submit1=st.button("Compare the profile with Job Role")
+    submit1=st.button("Compare the profile with Job Role")
 
 
 
-column_mapping = {
+    column_mapping = {
     'Education Qualifications': 'education',
     'Professional Qualifications With Years': 'professional_qualifications',
     'List of Technical Skills': 'technical_skills',
     'Programming & Software Skills': 'programming_skills',
     'List of Soft Skills': 'soft_skills',
-}
+    'Projects Completed':'Projects_Completed'
+    }
 
-input_prompt4 ="""
+    input_prompt4 ="""
 I will provide you with some information about a person, including their age,
- education qualifications, professional qualifications, years of experience, technical skills, programming skills, and soft skills. Based on this data, generate a professional description summarizing the person's background, expertise, and capabilities. The description should be formal and highlight their suitability for roles in their field.
+ education qualifications, professional qualifications, years of experience, technical skills, programming skills, and soft skills. Based on this data, generate a professional description in jason dump format the person's background, expertise, and capabilities. The description should be formal and highlight their suitability for roles in their field.
 
 Here is the information:
 - EmployeeCode:{EmployeeCode}
@@ -96,6 +98,7 @@ Here is the information:
 - List of Technical Skills: {technical_skills}
 - Programming Skills: {programming_skills}
 - Soft Skills: {soft_skills}
+- Projects Completed:{Projects_Completed}
 Generate a concise but detailed professional and comprehensive Resume based on the above information.
 
 Very Important:The main goal of the project is to compare an employee's resume with a job description.
@@ -123,62 +126,105 @@ Very Important:At this stage, no job description is provided; the focus is solel
 # new job role.provide some suggestions to improve that lacking areas.
 # """
 
-input_prompt3 = """
-You are a skilled employee profile and job description matching tool for identifying the skills that an employee lacks for a specific job role. You have a deep understanding of data science, data analysis, big data engineering, DevOps, and ATS functionality. 
+# input_prompt3 = """
+# You are a skilled employee profile and job description matching tool for identifying the skills that an employee lacks for a specific job role. You have a deep understanding of data science, data analysis, big data engineering, DevOps, and ATS functionality. 
 
-Your task is to compare the employee profile description with the provided job description and identify the gaps in the employee's skills, qualifications, and experience. 
-When matching the job description and profile, prioritize the following aspects:
-- Skills
-- Education qualifications
-- Professional qualifications
-- Working experience
+# Your task is to compare the employee profile description with the provided job description and identify the gaps in the employee's skills, qualifications, and experience. 
+# When matching the job description and profile, prioritize the following aspects:
+# - Skills
+# - Education qualifications
+# - Professional qualifications
+# - Working experience
 
-It is important to not only focus on the words but also on the essence and relevance of the qualifications, experience, and skills.
+# It is important to not only focus on the words but also on the essence and relevance of the qualifications, experience, and skills.
 
-**Very Important**:
-1. According to the provided job description, clearly classify the required skills into:
-   - Essential Skills
-   - Core Skills
-   - Other Skills
-2. Provide a detailed list of the missing skills in the employee profile based on the provided job description.
-3. Identify the gaps that the employee needs to address in order to improve their chances of succeeding in the new job role.
-4. Offer some suggestions on how the employee can improve in these lacking areas to better align with the job requirements.
-5. as a final step ,provide that employee suitable or not for that job possition.
-"""
+# **Very Important**:
+# 1. According to the provided job description, clearly classify the required skills into:
+#    - Essential Skills
+#    - Core Skills
+#    - Other Skills
+# 2. Provide a detailed list of the missing skills in the employee profile based on the provided job description.
+# 3. Identify the gaps that the employee needs to address in order to improve their chances of succeeding in the new job role.
+# 4. Offer some suggestions on how the employee can improve in these lacking areas to better align with the job requirements.
+# 5. as a final step ,direcly provide whether employee suitable or not for that job possition and give the reason of the choice.
+# 6. Do not consider the all the features of the employee. use expereince, skills, qulifications and essential scores with JD.
+# """
 
-def get_gemini_response_Description(input,prompt):
-    model=genai.GenerativeModel('gemini-1.5-flash')
-    response1=model.generate_content([input,prompt])
-    return response1.text
 
-def get_gemini_response1(input,text,prompt):
-    model=genai.GenerativeModel('gemini-1.5-flash')
-    responsek=model.generate_content([input,text,prompt])
-    return responsek.text
+    input_prompt3='''You are an advanced AI-powered **Employee Profile and Job Description Matching Tool** designed to identify skill gaps and assess an employee’s suitability for a specific job role. You have deep expertise in **data science, data analysis, big data engineering, DevOps, and ATS functionality** and can evaluate employee profiles based on job descriptions efficiently.
 
-if submit1:
-    if submit1 is not None:
-        emp_details = e_df[e_df['EmployeeCode'] == option3]
-        emp_details=emp_details[["EmployeeCode","Professional Qualifications With Years","List of Technical Skills",
-                                 "Programming & Software Skills","List of Soft Skills"]]
-        jd=df_jd["possition"]==option1
-        selected_jd = df_jd.loc[jd, "Details"].iloc[0]
+### **Task**
+Compare the given **employee profile** with the **job description** and determine the gaps in **skills, qualifications, and experience**. Your goal is to provide an in-depth analysis and recommendations for improving the employee’s chances of succeeding in the role.
+
+### **Matching Criteria**
+1. **Skills** (Technical , Soft, programming and software)
+2. **Education Qualifications**
+3. **Professional Certifications**
+4. **Relevant Work Experience & Project History(Years of Experience in this Company, Experience in Years Previous Positions)**
+5. **use the performance matrixes also(Number of Goal Assigned, Number of Goals Achieved, Final Score,
+       Goals Score, Competency Score, Cultural Value Scor,
+       Additional Accomplishment Score, Potential Assessment Score)**
+
+### **Structured Output**
+1. **Classify Required Skills**  
+   - Essential Skills (Must-have for the role)  
+   - Core Skills (Highly valuable but not mandatory)  
+   - Other Skills (Nice to have, additional advantages)  
+
+2. **Identify Missing Skills & Gaps**  
+   - Clearly list skills, qualifications, or experiences that are absent in the employee’s profile but are required for the job.  
+
+3. **Consider Transferable Skills from Related Roles**  
+   - If the employee has **experience in a related role** (e.g., **Data Engineering, Data Analysis, or similar**) for a **Data Science** position, do **not** automatically mark them as **unsuitable**.  
+   - Instead, highlight how their experience **aligns with the job** and identify what **additional skills they may need to acquire**.  
+   - Likewise, if a Data Scientist applies for a **Data Engineering or Data Analyst role**, consider their ability to transition based on their existing skills.
+
+4. **Improvement Recommendations**  
+   - Provide **practical** suggestions for bridging gaps, such as relevant courses, certifications, hands-on projects, or mentorship opportunities.
+
+### **Very Important**
+- Focus on the **essence and relevance** of skills, not just keyword matching.
+- Ensure the assessment is **objective, structured, and actionable**.
+- **Do not automatically mark employees as unsuitable just because they have a related but different role**—consider **transferable skills** and the feasibility of transitioning.
+- Use a **logical and data-driven approach** to generate development insights.
+- indicate that employee suitable or not the relevent possition.
+- clearly mentioned, that employee suitable or not.
+
+Enhance employee career growth by offering personalized **skill development plans and career transition insights** based on experience and project history.'''
+
+    def get_gemini_response_Description(input,prompt):
+        model=genai.GenerativeModel('gemini-1.5-flash')
+        response1=model.generate_content([input,prompt])
+        return response1.text
+
+    def get_gemini_response1(input,text,prompt):
+        model=genai.GenerativeModel('gemini-1.5-flash')
+        responsek=model.generate_content([input,text,prompt])
+        return responsek.text
+
+    if submit1:
+        if submit1 is not None:
+            emp_details = e_df[e_df['EmployeeCode'] == option3]
+        # emp_details=emp_details[["EmployeeCode","Professional Qualifications With Years","List of Technical Skills",
+        #                          "Programming & Software Skills","List of Soft Skills"]]
+            jd=df_jd["possition"]==option1
+            selected_jd = df_jd.loc[jd, "Details"].iloc[0]
        
-        emp_details = emp_details.rename(columns=column_mapping)
+            emp_details = emp_details.rename(columns=column_mapping)
         
-        if not emp_details.empty:
+            if not emp_details.empty:
         # Convert the filtered DataFrame to JSON format
-            employee_details_json = emp_details.to_json(orient='records', indent=4)
-        else:
-            st.write(f"No employee Details found with ID")
-            employee_details_json = None
+                employee_details_json = emp_details.to_json(orient='records', indent=4)
+            else:
+                st.write(f"No employee Details found with ID")
+                employee_details_json = None
 
-        if employee_details_json:
-            response11 = get_gemini_response_Description(input_prompt4, employee_details_json)
-            if response11 is not None:
-                response2 = get_gemini_response1(response11,selected_jd,input_prompt3)
-                st.subheader("The response is:")
-                st.write(response2)
+            if employee_details_json:
+                response11 = get_gemini_response_Description(input_prompt4, employee_details_json)
+                if response11 is not None:
+                    response2 = get_gemini_response1(response11,selected_jd,input_prompt3)
+                    st.subheader("The response is:")
+                    st.write(response2)
 
 
 
@@ -215,11 +261,11 @@ if submit1:
 #     st.write("Insert JD")
 
 
-input_prompt1 = """
+    input_prompt1 = """
  You are an experienced Technical Human Resource Manager,your task is to review the provided resume against the job description. 
   Please share your professional evaluation on whether the candidate's profile aligns with the role. 
  Highlight the strengths and weaknesses of the applicant in relation to the specified job requirements.
-"""
+    """
 
 # input_prompt3 = """
 # You are an skilled ATS (Applicant Tracking System) scanner with a deep understanding of data science, Data analyst, Big data engineer ,DEVOPS
