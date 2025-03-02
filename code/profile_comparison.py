@@ -34,7 +34,7 @@ def get_jd_data():
 df_jd = get_jd_data()
 conn.close()
 
-e_df=pd.read_excel('C://Users//DanukaDilshanRathnay//Desktop//AI-Driven-Job-Role-Fit-Prediction//com//Employee8.xlsx')
+e_df=pd.read_excel('C://Users//DanukaDilshanRathnay//Desktop//AI-Driven-Job-Role-Fit-Prediction//code//Dataset//Employee8.xlsx')
 # ## Streamlit App
 # st.set_page_config(page_title="TalentAligner")
 def run():

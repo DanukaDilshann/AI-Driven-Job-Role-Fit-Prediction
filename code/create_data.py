@@ -1,12 +1,16 @@
 import pandas as pd
 import pyodbc
 import nltk
+import torch
+import numpy as np
 from nltk import word_tokenize
 nltk.download('punkt')
 from nltk.stem import WordNetLemmatizer
 nltk.download("wordnet")
 nltk.download("omw-1.4")
 
+torch.manual_seed(42)
+np.random.seed(42)
 lematizer = WordNetLemmatizer()
 
 # Database connection details
@@ -57,7 +61,10 @@ import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
-df = pd.read_excel('C://Users//DanukaDilshanRathnay//Desktop//AI-Driven-Job-Role-Fit-Prediction//com//Employee6.xlsx', sheet_name="Sheet1")
+df = pd.read_excel('C://Users//DanukaDilshanRathnay//Desktop//AI-Driven-Job-Role-Fit-Prediction//code//Dataset//Employee8.xlsx', sheet_name="Sheet1")
+
+df = df[df['Department'] == 'Data and AI']
+
 
 df_filtered = df[["EmployeeCode", "List of Technical Skills", "List of Programming Skills", "List of Soft Skills","Education Qualifications"]].copy()
 
@@ -94,13 +101,13 @@ df_filtered["Soft Score_with_JD"] = df_filtered["List of Soft Skills"].fillna(""
 df_filtered["Education_match_Score_with_JD"] = df_filtered["Education Qualifications"].fillna("").astype(str).apply(lambda x: compute_similarity(jd["educ"], [x]))
 
 
+
 df_filtered=df_filtered.drop(columns=["List of Technical Skills", "List of Programming Skills", "List of Soft Skills","Education Qualifications"],axis=1)
 df_filtered = df_filtered.sort_values(by="EmployeeCode", ascending=True)
-df_filtered.to_excel("score.xlsx",index=False)
+df_filtered.to_excel("C://Users//DanukaDilshanRathnay//Desktop//AI-Driven-Job-Role-Fit-Prediction//code//Dataset//Similarity_Values_JD&Skills.xlsx",index=False)
 df_merge=df_filtered.merge(df,how='left',on="EmployeeCode")
 df_merge.drop(columns=["List of Technical Skills", "List of Programming Skills", "List of Soft Skills","FullName"],axis=1,inplace=True)
 print(df_filtered.head(5))
-df_merge.to_excel("Merge_data_new6.xlsx",index=False)
-
+df_merge.to_excel("C://Users//DanukaDilshanRathnay//Desktop//AI-Driven-Job-Role-Fit-Prediction//code//Dataset//Similarity_with_EMP_data.xlsx",index=False)
 
 
