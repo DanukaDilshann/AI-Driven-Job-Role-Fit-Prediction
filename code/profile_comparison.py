@@ -273,14 +273,14 @@ Very Important:At this stage, no job description is provided; the focus is solel
 
 
 
-    def get_gemini_response_Description(input,prompt):
-        model=genai.GenerativeModel('gemini-1.5-flash')
-        response1=model.generate_content([input,prompt])
+    def get_gemini_response_Description(input, prompt, temperature=0.3):
+        model = genai.GenerativeModel('gemini-1.5-flash', generation_config={"temperature": temperature})
+        response1 = model.generate_content([input, prompt])
         return response1.text
 
-    def get_gemini_response1(input,text,prompt):
-        model=genai.GenerativeModel('gemini-1.5-flash')
-        responsek=model.generate_content([input,text,prompt])
+    def get_gemini_response1(input, text, prompt, temperature=0.3):
+        model = genai.GenerativeModel('gemini-1.5-flash', generation_config={"temperature": temperature})
+        responsek = model.generate_content([input, text, prompt])
         return responsek.text
 
     if submit1:

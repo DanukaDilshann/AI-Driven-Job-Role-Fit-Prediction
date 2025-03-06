@@ -31,9 +31,11 @@ If the employee lacks some requirements, assess their transition potential by:
 - Highlighting previous job responsibilities that align with the new role.
 - Evaluating their learning adaptability and growth potential.
 
-4️⃣ **Job Role Description for Comparison**
+4️⃣ **Job Role Suitability**
 📌 Here is the **job description** for the target role:
-"{selected_jd}"
+"{selected_jd}" you have to compare the all the requirement with job description  and comment on his/her suitability.
+correctly mentioned the whether his or her sutability or not
+
 
 5️⃣ **Career Development Recommendations**
 Provide specific action items to bridge the gap, such as:
