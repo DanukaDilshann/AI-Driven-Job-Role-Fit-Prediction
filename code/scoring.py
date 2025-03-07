@@ -20,7 +20,7 @@ def load_data():
 
         # Select relevant columns
         df_pca = df_pca[['EmployeeCode', 'Suitability_score_scaled_PCA']]
-        df_ae = df_ae[['EmployeeCode', 'SuitabilityScore_AE_scaled']]
+        df_ae = df_ae[['EmployeeCode', 'SuitabilityScore_AE_norm_scale']]
         df_emp = df_emp[['EmployeeCode', 'FullName', 'Gender', 'Age', 'Department', 'JobCategory', 
                          'ProficiencyLevel', 'Education Qualifications', 'Years of Experience in this Company', 'Projects Completed']]
         
@@ -43,7 +43,7 @@ def run():
         if st.button("Show Score"):
         # Fetch PCA score
             score_pca = df_pca[df_pca['EmployeeCode'] == selected_employee]['Suitability_score_scaled_PCA']
-            score_ae = df_ae[df_ae['EmployeeCode'] == selected_employee]['SuitabilityScore_AE_scaled']
+            score_ae = df_ae[df_ae['EmployeeCode'] == selected_employee]['SuitabilityScore_AE_norm_scale']
 
         # Check if values exist
             if not score_pca.empty:

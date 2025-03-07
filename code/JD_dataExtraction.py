@@ -34,43 +34,15 @@ def run():
         upload_jd = st.file_uploader("Upload your JD (PDF)...", type=["pdf"])
         if upload_jd is not None:
             st.write("PDF uploaded Successfully") 
-            extracted_text = extract_text_from_pdf(upload_jd)  # Extract text using pdfplumber
-            input_text = extracted_text  # Use extracted text for processing
+            extracted_text = extract_text_from_pdf(upload_jd)  
+            input_text = extracted_text  
         
-# def input_pdf_text(file):
-#     reader=pdf.PdfReader(file)
-#     text=""
-#     for page in reader.pages:
-#         text+=page.extract_text() or ""
-#     return text
-# pdftext=input_pdf_text(upload_jd)
-
-# col1,col2=st.columns(2)
-# with col1:
-#     submit4=st.text_input("Employee_ID : ")
-# with col2:
-#    submit5=st.button("Description about the Employee")
-
-# submit1=st.button("Tell me about the resume")
-# submit2=st.button("how can i Imporove my skills")
-
-# submit3=st.button("Presentage Match")
 
     submit0=st.button("JD Data Extraction")
 
     if submit0:
 
         def get_gemini_response_description(input_jd, prompt):
-            """
-        Function to extract details from a job description using a generative model.
-
-    Parameters:
-        input_jd (str): The job description text.
-        prompt (str): The prompt to guide the generative model for extracting details.
-
-    Returns:
-        dict: Extracted details from the job description.
-    """
             model = genai.GenerativeModel('gemini-1.5-flash')
             response = model.generate_content([input_jd, prompt])
             return response.text
@@ -117,20 +89,8 @@ def run():
         required_years_of_experience = match5.group(1) if match5 else None
         required_educational_qualifications = match6.group(1) if match6 else None  # Handle cases where no match is found
 
-# Create a DataFrame and store the job title
-#     data = {
-#     "Job Title": [job_title],
-#     "Required Programming Skills": [required_programming_skills],
-#     "Required Soft Skills": [required_soft_skills],
-#     "Required Technical Skills": [required_technical_skills],
-#     "Required Years of Experience": [required_years_of_experience],
-#     "Required Educational Qualifications": [required_educational_qualifications],
-# }
         try:
             store_Job_description( job_title,required_programming_skills,required_soft_skills,required_technical_skills,required_years_of_experience,required_educational_qualifications)
         except:
             st.write("JD Store Fail")
     
-    # df = pd.DataFrame(data)
-    # df.to_excel("JD_info.xlsx",index=False)
-   
