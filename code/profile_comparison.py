@@ -286,8 +286,6 @@ Very Important:At this stage, no job description is provided; the focus is solel
     if submit1:
         if submit1 is not None:
             emp_details = e_df[e_df['EmployeeCode'] == option3]
-        # emp_details=emp_details[["EmployeeCode","Professional Qualifications With Years","List of Technical Skills",
-        #                          "Programming & Software Skills","List of Soft Skills"]]
             jd=df_jd["possition"]==option1
             selected_jd = df_jd.loc[jd, "Details"].iloc[0]
             input_prompt3 = get_input_prompt3(selected_jd)
