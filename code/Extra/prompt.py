@@ -31,13 +31,19 @@ If the employee lacks some requirements, assess their transition potential by:
 - Highlighting previous job responsibilities that align with the new role.
 - Evaluating their learning adaptability and growth potential.
 
-4️⃣**Career Development Recommendations**
+4️⃣ **Job Role Suitability**
+📌 Here is the **job description** for the target role:
+"{selected_jd}" you have to compare the all the requirement with job description  and comment on his/her suitability.
+correctly mentioned the whether his or her sutability or not
+
+
+5️⃣ **Career Development Recommendations**
 Provide specific action items to bridge the gap, such as:
 🎯 Recommended Certifications & Courses (e.g., "AWS Certified Machine Learning – Specialty")
 📌 Suggested Hands-on Projects (e.g., "Build a Flask API for deploying ML models")
 🔹 Mentorship & Learning Pathways (e.g., "Shadow a senior engineer for real-world exposure")
 
-5️⃣ **Estimated Readiness Timeline**
+6️⃣ **Estimated Readiness Timeline**
 If upskilling is required, estimate how long the employee would need (e.g., 6-12 months).
 
 🔥 **Output Format Guidelines**
