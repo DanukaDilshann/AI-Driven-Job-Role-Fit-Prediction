@@ -6,3 +6,4 @@ pyodbc
 pandas
 matplotlib
 seaborn
+google-generativeai
