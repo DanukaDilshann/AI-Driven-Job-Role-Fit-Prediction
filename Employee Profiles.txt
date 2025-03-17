@@ -1,0 +1,60 @@
+1. Employee Profiles
+EmployeeCode: A unique identifier for each employee.
+FullName: Generated based on Gender (Male/Female).
+Gender: Balanced distribution, slightly favoring males (~60%) as per common industry trends.
+Age: Ranges from 23-60, distributed as:
+23-27 → More interns, junior roles.
+28-40 → Mid-level professionals.
+41-60 → Senior professionals & managers.
+2. Job Details
+Department: Either "Software Engineering" or "Data and AI".
+JobCategory: Specific roles within each department:
+Software Engineering: Frontend Developer, Backend Developer, QA, UI/UX Designer.
+Data and AI: Data Engineer, Data Scientist, Data Analyst.
+Designation & JobLevel: Assigned based on experience & education.
+ProficiencyLevel: Junior, Mid-Level, Senior, Expert (aligned with experience & education).
+3. Education & Qualifications
+Education Qualifications: Bachelor's, Master's, PhD.
+Professional Qualifications: Certifications relevant to JobCategory.
+Years of Experience in This Company: Based on Age & JobLevel.
+4. Skills
+Technical Skills, Programming Skills, Software Skills: Relevant to JobCategory.
+Soft Skills: Leadership, Communication, Critical Thinking, etc.
+5. Performance & Assessments
+Handled Projects: Number of projects handled based on experience & proficiency.
+Disciplinary Actions: Yes/No (~5% rare cases), with the Type of Disciplinary Action if applicable.
+Current Role: Derived from JobCategory.
+KPI (Key Performance Indicator): Based on past performance.
+6. Performance Scores & Employee Metrics
+Absenteeism Rate: Higher absenteeism for younger employees.
+Employee Satisfaction Score: Higher for seniors, lower for juniors.
+Experience in Previous Positions & Total Experience in Years: Derived from Age.
+Number of Goals Assigned & Achieved: Higher alignment with KPI.
+7. Project Section (Newly Added)
+Each employee should have 1 to 5 projects completed, depending on:
+Job Role & Department: Projects must align with their expertise.
+Experience Level:
+<5 years: 1-2 projects.
+5-10 years: 2-3 projects.
+10-20 years: 3-4 projects.
+>20 years: 4-5 projects.
+Performance Metrics Impact: Employees with higher Final Score, Competency Score, and Goal Score should have handled more complex projects.
+Realistic Project Titles & Descriptions, such as:
+Frontend Developer → "Web Application UI Redesign"
+Data Scientist → "AI Model for Predictive Analytics"
+Data Engineer → "ETL Pipeline Optimization"
+QA → "Automated Testing Framework Implementation"
+8. Final Scores (Calculated from Multiple Features)
+Final Performance Score
+Goal Score
+Competency Score
+Cultural Value Score
+Additional Accomplishment Score
+Potential Assessment Score
+Trait Assessment Score
+Data Generation Requirements
+Ensure Realism:
+Gender-balanced naming conventions.
+Education qualifications aligning with job roles.
+Performance and KPI metrics realistically distributed.
+Project assignments corresponding to job roles, experience, and expertise.
