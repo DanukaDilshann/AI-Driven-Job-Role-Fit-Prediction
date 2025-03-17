@@ -2,3 +2,7 @@ python-dotenv
 pandas 
 pdf2image
 PyPDF2
+pyodbc
+pandas
+matplotlib
+seaborn
